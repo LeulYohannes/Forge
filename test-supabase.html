@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Test - Forge AI</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <h1>Supabase Connection Test</h1>
+    <div id="result">Testing...</div>
+
+    <hr>
+    <h2>Manual Insert Test</h2>
+    <input type="text" id="name" placeholder="Your name" style="width:200px">
+    <input type="email" id="email" placeholder="Your email" style="width:200px">
+    <button onclick="testInsert()">Insert into waitlist</button>
+    <pre id="output" style="background:#f0f0f0; padding:10px; margin-top:20px;"></pre>
+
+    <script>
+        // YOUR SUPABASE CREDENTIALS
+        const SUPABASE_URL = 'https://zgtdkwgtslgannzshzcm.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_b4MyNfG_77m0vzx_FkU7iA_hV09x5zL';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const resultDiv = document.getElementById('result');
+        const outputDiv = document.getElementById('output');
+
+        // Test connection on load
+        async function testConnection() {
+            resultDiv.innerText = 'Testing connection...';
+            try {
+                // Try a simple count query (head)
+                const { error } = await supabase
+                    .from('waitlist')
+                    .select('*', { count: 'exact', head: true });
+                
+                if (error) {
+                    resultDiv.innerHTML = `❌ Connection failed: ${error.message}<br>Code: ${error.code}`;
+                    outputDiv.innerText = `Error details: ${JSON.stringify(error, null, 2)}`;
+                } else {
+                    resultDiv.innerHTML = '✅ Connection successful! Table "waitlist" exists and accessible.';
+                }
+            } catch (err) {
+                resultDiv.innerHTML = `❌ Exception: ${err.message}`;
+                console.error(err);
+            }
+        }
+
+        // Manual insert function
+        window.testInsert = async function() {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            
+            if (!name || !email) {
+                alert('Enter name and email');
+                return;
+            }
+            
+            outputDiv.innerText = 'Inserting...';
+            
+            const { data, error } = await supabase
+                .from('waitlist')
+                .insert([{ name, email, status: 'pending' }])
+                .select();
+            
+            if (error) {
+                outputDiv.innerText = `ERROR: ${error.message}\nCode: ${error.code}\nFull error: ${JSON.stringify(error, null, 2)}`;
+            } else {
+                outputDiv.innerText = `SUCCESS! Inserted:\n${JSON.stringify(data, null, 2)}`;
+                // Clear fields
+                document.getElementById('name').value = '';
+                document.getElementById('email').value = '';
+            }
+        };
+        
+        // Run test
+        testConnection();
+    </script>
+</body>
+</html>

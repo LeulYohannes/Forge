@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forge AI — Become a hireable AI engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --charcoal:#1A1816;
+    --charcoal-soft:#221F1C;
+    --ember:#FF5A1F;
+    --rust:#8A3A1F;
+    --steel:#5C7C8A;
+    --ash:#8C8579;
+    --off-white:#F2EDE6;
+    --line: rgba(242,237,230,0.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--charcoal);
+    color:var(--off-white);
+    font-family:'Archivo', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Archivo Expanded', sans-serif;
+    font-weight:800;
+    letter-spacing:-0.01em;
+    text-transform:uppercase;
+  }
+  .mono{font-family:'JetBrains Mono', monospace;}
+  a{color:inherit;}
+  .container{max-width:1180px;margin:0 auto;padding:0 32px;}
+
+  /* NAV */
+  nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(26,24,22,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .container{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 32px;
+  }
+  .logo{
+    font-family:'Archivo Expanded', sans-serif;
+    font-weight:800; font-size:1.3rem; letter-spacing:0.02em;
+    display:flex; align-items:center; gap:10px;
+  }
+  .logo .mark{
+    width:14px; height:14px; background:var(--ember);
+    transform:rotate(45deg);
+    box-shadow:0 0 0 3px transparent, 0 0 14px rgba(255,90,31,0.6);
+  }
+  .nav-links{display:flex; gap:36px; font-size:0.95rem; font-weight:500;}
+  .nav-links a{opacity:0.75; transition:opacity 0.2s; text-decoration:none;}
+  .nav-links a:hover{opacity:1;}
+  .nav-cta{
+    background:var(--ember); color:var(--charcoal);
+    padding:10px 22px; font-weight:600; font-size:0.9rem;
+    border:none; border-radius:2px; cursor:pointer;
+    text-decoration:none;
+    transition:background 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover{background:#ff7240; transform:translateY(-1px);}
+
+  /* HERO */
+  .hero{
+    padding:120px 0 100px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .hero::before{
+    content:'';
+    position:absolute; top:-200px; right:-150px;
+    width:600px; height:600px;
+    background:radial-gradient(circle, rgba(255,90,31,0.16), transparent 70%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:60px; align-items:center;
+    position:relative; z-index:2;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-family:'JetBrains Mono', monospace; font-size:0.78rem;
+    color:var(--ember); letter-spacing:0.15em; text-transform:uppercase;
+    margin-bottom:28px; font-weight:500;
+  }
+  .eyebrow::before{
+    content:''; width:8px; height:8px; background:var(--ember);
+    display:inline-block; animation:pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  .hero h1{
+    font-size:4.4rem; line-height:1.04; margin-bottom:28px;
+  }
+  .hero h1 .accent{color:var(--ember);}
+  .hero p.lede{
+    font-size:1.18rem; color:rgba(242,237,230,0.7);
+    max-width:520px; margin-bottom:40px;
+    font-weight:400;
+  }
+  .hero-ctas{display:flex; gap:16px; align-items:center; margin-bottom:48px;}
+  .btn-primary{
+    background:var(--ember); color:var(--charcoal);
+    padding:16px 32px; font-weight:700; font-size:1rem;
+    border:none; border-radius:2px; cursor:pointer;
+    text-decoration:none; display:inline-block;
+    transition:background 0.2s, transform 0.15s;
+    font-family:'Archivo Expanded', sans-serif;
+    text-transform:uppercase; letter-spacing:0.03em;
+  }
+  .btn-primary:hover{background:#ff7240; transform:translateY(-2px);}
+  .btn-ghost{
+    color:var(--off-white); padding:16px 8px; font-weight:600;
+    text-decoration:none; border-bottom:1px solid var(--ash);
+    transition:border-color 0.2s, color 0.2s;
+    font-size:0.95rem;
+  }
+  .btn-ghost:hover{border-color:var(--ember); color:var(--ember);}
+  .hero-meta{
+    display:flex; gap:36px;
+    font-family:'JetBrains Mono', monospace; font-size:0.85rem;
+    color:var(--ash);
+  }
+  .hero-meta strong{color:var(--off-white); display:block; font-size:1.4rem; font-family:'Archivo Expanded',sans-serif; margin-bottom:2px;}
+
+  /* SIGNATURE: SKILL PROFILE CARD */
+  .profile-card{
+    background:var(--charcoal-soft);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:28px;
+    position:relative;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,0.6);
+  }
+  .profile-card::before{
+    content:'';
+    position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg, var(--ember), var(--rust));
+  }
+  .profile-head{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    padding-bottom:20px; border-bottom:1px solid var(--line); margin-bottom:24px;
+  }
+  .profile-head .name{font-size:1.1rem; font-weight:700; font-family:'Archivo Expanded',sans-serif; text-transform:uppercase;}
+  .profile-head .role{font-size:0.82rem; color:var(--ash); margin-top:4px; font-family:'JetBrains Mono',monospace;}
+  .status-pill{
+    font-family:'JetBrains Mono',monospace; font-size:0.72rem; letter-spacing:0.08em;
+    background:rgba(255,90,31,0.12); color:var(--ember);
+    padding:6px 12px; border-radius:20px; text-transform:uppercase; font-weight:600;
+    white-space:nowrap;
+  }
+  .skill-row{margin-bottom:18px;}
+  .skill-row:last-child{margin-bottom:0;}
+  .skill-label{
+    display:flex; justify-content:space-between;
+    font-size:0.85rem; margin-bottom:8px; font-weight:500;
+  }
+  .skill-label .val{font-family:'JetBrains Mono',monospace; color:var(--steel); font-weight:700;}
+  .bar-track{height:8px; background:rgba(242,237,230,0.07); border-radius:2px; overflow:hidden;}
+  .bar-fill{
+    height:100%; border-radius:2px;
+    background:linear-gradient(90deg, var(--steel), var(--ember));
+    width:0%;
+    transition:width 1.6s cubic-bezier(0.16,1,0.3,1);
+  }
+  .profile-card.in-view .bar-fill{width:var(--target);}
+  .profile-footer{
+    margin-top:24px; padding-top:20px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:var(--ash);
+  }
+  .profile-footer .readiness{color:var(--off-white); font-weight:700; font-size:1.4rem; font-family:'Archivo Expanded',sans-serif;}
+
+  /* SECTION GENERAL */
+  section{padding:100px 0;}
+  .section-head{max-width:680px; margin-bottom:64px;}
+  .section-tag{
+    font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--ember);
+    letter-spacing:0.15em; text-transform:uppercase; margin-bottom:16px; font-weight:600;
+  }
+  .section-head h2{font-size:2.6rem; line-height:1.15; margin-bottom:18px;}
+  .section-head p{color:rgba(242,237,230,0.65); font-size:1.05rem; max-width:560px;}
+
+  /* PROBLEM */
+  .problem{border-bottom:1px solid var(--line); background:var(--charcoal-soft);}
+  .problem-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .problem-item{
+    background:var(--charcoal-soft); padding:36px;
+  }
+  .problem-item .glyph{
+    font-family:'JetBrains Mono',monospace; color:var(--rust); font-size:0.85rem;
+    margin-bottom:14px; font-weight:700;
+  }
+  .problem-item h3{font-size:1.1rem; text-transform:none; margin-bottom:10px; font-weight:700; letter-spacing:0;}
+  .problem-item p{color:rgba(242,237,230,0.6); font-size:0.95rem;}
+
+  /* PROCESS / FORGE FLOW */
+  .flow{position:relative;}
+  .flow-list{display:flex; flex-direction:column;}
+  .flow-step{
+    display:grid; grid-template-columns:140px 1fr; gap:40px;
+    padding:36px 0; border-top:1px solid var(--line);
+    align-items:start;
+  }
+  .flow-step:last-child{border-bottom:1px solid var(--line);}
+  .flow-num{
+    font-family:'JetBrains Mono',monospace; font-size:0.85rem; color:var(--ash);
+    display:flex; align-items:center; gap:12px;
+  }
+  .flow-num .heat{
+    width:10px; height:24px; border-radius:2px;
+    background:var(--line);
+  }
+  .flow-step:nth-child(1) .heat{background:var(--steel);}
+  .flow-step:nth-child(2) .heat{background:#7A8F4A;}
+  .flow-step:nth-child(3) .heat{background:#D6A23B;}
+  .flow-step:nth-child(4) .heat{background:var(--ember);}
+  .flow-step:nth-child(5) .heat{background:var(--rust);}
+  .flow-step:nth-child(6) .heat{background:var(--steel);}
+  .flow-step:nth-child(7) .heat{background:var(--ember);}
+  .flow-content h3{font-size:1.4rem; margin-bottom:10px; text-transform:none; letter-spacing:0; font-weight:700;}
+  .flow-content p{color:rgba(242,237,230,0.6); font-size:1rem; max-width:600px;}
+
+  /* COMPONENTS GRID */
+  .components{background:var(--charcoal-soft); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .comp-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .comp-item{
+    background:var(--charcoal-soft); padding:32px 24px;
+    display:flex; flex-direction:column; min-height:220px;
+  }
+  .comp-letter{
+    font-family:'JetBrains Mono',monospace; color:var(--ember); font-size:0.85rem;
+    font-weight:700; margin-bottom:auto; padding-bottom:24px;
+  }
+  .comp-item h3{font-size:1.02rem; text-transform:none; letter-spacing:0; font-weight:700; margin-bottom:8px;}
+  .comp-item p{font-size:0.88rem; color:rgba(242,237,230,0.55);}
+
+  /* OUTPUT */
+  .output-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;}
+  .output-list{list-style:none;}
+  .output-list li{
+    display:flex; align-items:flex-start; gap:16px;
+    padding:20px 0; border-top:1px solid var(--line);
+    font-size:1.05rem;
+  }
+  .output-list li:last-child{border-bottom:1px solid var(--line);}
+  .output-list .tick{
+    font-family:'JetBrains Mono',monospace; color:var(--steel); font-weight:700; margin-top:2px;
+  }
+  .output-visual{
+    background:var(--charcoal-soft); border:1px solid var(--line); border-radius:4px; padding:32px;
+    font-family:'JetBrains Mono',monospace; font-size:0.85rem; color:var(--ash);
+  }
+  .output-visual .terminal-head{
+    display:flex; gap:8px; margin-bottom:20px;
+  }
+  .output-visual .dot{width:10px; height:10px; border-radius:50%; background:var(--line);}
+  .output-visual .line{margin-bottom:10px;}
+  .output-visual .line .key{color:var(--steel);}
+  .output-visual .line .val{color:var(--off-white);}
+  .output-visual .line .ok{color:var(--ember);}
+
+  /* BUSINESS MODEL */
+  .model{border-top:1px solid var(--line);}
+  .model-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:32px;}
+  .model-card{
+    border:1px solid var(--line); border-radius:4px; padding:36px;
+    position:relative; overflow:hidden;
+  }
+  .model-card .phase-tag{
+    font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--ash);
+    text-transform:uppercase; letter-spacing:0.12em; margin-bottom:16px; display:block;
+  }
+  .model-card h3{font-size:1.3rem; margin-bottom:14px; text-transform:none; letter-spacing:0;}
+  .model-card p{color:rgba(242,237,230,0.6); font-size:0.95rem;}
+  .model-card.active{border-color:rgba(255,90,31,0.4); background:linear-gradient(160deg, rgba(255,90,31,0.06), transparent);}
+  .model-card.active .phase-tag{color:var(--ember);}
+
+  /* VISION / CTA */
+  .vision{
+    text-align:center; border-top:1px solid var(--line);
+    position:relative; overflow:hidden;
+  }
+  .vision::before{
+    content:'';
+    position:absolute; bottom:-300px; left:50%; transform:translateX(-50%);
+    width:900px; height:600px;
+    background:radial-gradient(circle, rgba(255,90,31,0.14), transparent 70%);
+    pointer-events:none;
+  }
+  .vision-inner{max-width:780px; margin:0 auto; position:relative; z-index:2;}
+  .vision .section-tag{justify-content:center; display:flex;}
+  .vision h2{font-size:3rem; margin-bottom:24px; line-height:1.2;}
+  .vision p{font-size:1.1rem; color:rgba(242,237,230,0.65); margin-bottom:44px;}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--line); padding:48px 0;}
+  .footer-grid{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px;}
+  .footer-grid .logo{font-size:1.1rem;}
+  .footer-links{display:flex; gap:32px; font-size:0.9rem; color:var(--ash);}
+  .footer-links a{text-decoration:none; transition:color 0.2s;}
+  .footer-links a:hover{color:var(--off-white);}
+  .footer-copy{font-family:'JetBrains Mono',monospace; font-size:0.78rem; color:var(--ash); margin-top:24px;}
+
+  /* RESPONSIVE */
+  @media (max-width: 980px){
+    .hero-grid{grid-template-columns:1fr; gap:48px;}
+    .hero h1{font-size:3rem;}
+    .problem-grid{grid-template-columns:1fr;}
+    .comp-grid{grid-template-columns:repeat(2,1fr);}
+    .flow-step{grid-template-columns:1fr; gap:12px;}
+    .output-grid{grid-template-columns:1fr; gap:40px;}
+    .model-grid{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    .vision h2{font-size:2.2rem;}
+    .section-head h2{font-size:2rem;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; animation:none !important;}
+  }
+
+  :focus-visible{outline:2px solid var(--ember); outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="logo"><span class="mark"></span>FORGE AI</div>
+    <div class="nav-links">
+      <a href="#problem">Problem</a>
+      <a href="#flow">How it works</a>
+      <a href="#components">System</a>
+      <a href="#model">Business</a>
+    </div>
+    <a href="waitlist.html" class="nav-cta">Join Waitlist</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Skill production system</div>
+        <h1>Stop learning AI.<br>Start <span class="accent">becoming</span> an AI engineer.</h1>
+        <p class="lede">Forge AI replaces courses and tutorials with real engineering tasks, continuous evaluation, and a verified skill profile employers can trust. The output isn't knowledge — it's measurable, hireable ability.</p>
+        <div class="hero-ctas">
+          <a href="waitlist.html" class="btn-primary">Join Waitlist</a>
+          <a href="#flow" class="btn-ghost">See how it works</a>
+        </div>
+        <div class="hero-meta">
+          <div><strong>7-step</strong>closed-loop pipeline</div>
+          <div><strong>5</strong>core scoring dimensions</div>
+          <div><strong>0</strong>passive lessons</div>
+        </div>
+      </div>
+
+      <div class="profile-card" id="profileCard">
+        <div class="profile-head">
+          <div>
+            <div class="name">Skill Profile — A. Kassa</div>
+            <div class="role">Target role: ML Systems Engineer</div>
+          </div>
+          <div class="status-pill">In progress</div>
+        </div>
+
+        <div class="skill-row">
+          <div class="skill-label"><span>Correctness</span><span class="val">82 / 100</span></div>
+          <div class="bar-track"><div class="bar-fill" style="--target:82%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label"><span>Code quality</span><span class="val">74 / 100</span></div>
+          <div class="bar-track"><div class="bar-fill" style="--target:74%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label"><span>System design</span><span class="val">61 / 100</span></div>
+          <div class="bar-track"><div class="bar-fill" style="--target:61%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label"><span>AI competency</span><span class="val">88 / 100</span></div>
+          <div class="bar-track"><div class="bar-fill" style="--target:88%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label"><span>Production readiness</span><span class="val">57 / 100</span></div>
+          <div class="bar-track"><div class="bar-fill" style="--target:57%"></div></div>
+        </div>
+
+        <div class="profile-footer">
+          <span>Next task: Optimize inference latency<br>on a deployed RAG pipeline</span>
+          <span class="readiness">72%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="problem" id="problem">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">The problem</div>
+      <h2>"Learning AI" rarely leads to hiring.</h2>
+      <p>Courses, roadmaps, and tutorials produce people who know about engineering — not people who can do it, or prove it.</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-item">
+        <div class="glyph">01 / PASSIVE</div>
+        <h3>Learning stays passive</h3>
+        <p>Videos, reading, and roadmaps build familiarity, not the muscle memory of building real systems under real constraints.</p>
+      </div>
+      <div class="problem-item">
+        <div class="glyph">02 / UNTESTED</div>
+        <h3>No real engineering experience</h3>
+        <p>Most learners finish without ever shipping anything that resembles the work they're being hired to do.</p>
+      </div>
+      <div class="problem-item">
+        <div class="glyph">03 / UNVERIFIED</div>
+        <h3>No reliable proof of skill</h3>
+        <p>Portfolios are inconsistent, certificates are weak signals, and self-reported ability can't be trusted.</p>
+      </div>
+      <div class="problem-item">
+        <div class="glyph">04 / UNTRUSTED</div>
+        <h3>Employers can't verify ability</h3>
+        <p>Without a measurable signal, employers default to credentials and pedigree — locking out capable beginners.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="flow" id="flow">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">How it works</div>
+      <h2>A closed loop that converts effort into employability.</h2>
+      <p>Every cycle through the loop moves your skill profile closer to the bar employers actually hire against.</p>
+    </div>
+    <div class="flow-list">
+      <div class="flow-step">
+        <div class="flow-num"><span class="heat"></span>01 — INPUT</div>
+        <div class="flow-content">
+          <h3>Assessment</h3>
+          <p>Your current ability is measured directly against the requirements of real target job roles — not a generic skill quiz.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num"><span class="heat"></span>02 — ANALYZE</div>
+        <div class="flow-content">
+          <h3>Gap analysis</h3>
+          <p>The system identifies exactly which skills are missing, weak, or unverified, based on what the role actually demands.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num"><span class="heat"></span>03 — ASSIGN</div>
+        <div class="flow-content">
+          <h3>Task assignment</h3>
+          <p>You receive structured engineering tasks built specifically to close the gaps identified — never generic exercises.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num"><span class="heat"></span>04 — BUILD</div>
+        <div class="flow-content">
+          <h3>Execution</h3>
+          <p>You build real systems and solutions — the same kind of work expected on the job, not simplified practice problems.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num"><span class="heat"></span>05 — SCORE</div>
+        <div class="flow-content">
+          <h3>Evaluation</h3>
+          <p>Each submission is scored against structured rubrics: correctness, code quality, system design, AI competency, and production readiness.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num"><span class="heat"></span>06 — UPDATE</div>
+        <div class="flow-content">
+          <h3>Skill profile update</h3>
+          <p>Your dynamic skill profile updates in real time, reflecting exactly where you stand against your target role.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num"><span class="heat"></span>07 — REPEAT</div>
+        <div class="flow-content">
+          <h3>Iteration loop</h3>
+          <p>New tasks generate automatically around your remaining weaknesses — the loop continues until you're job-ready.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="components" id="components">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">The system</div>
+      <h2>Five components, one pipeline.</h2>
+      <p>Each piece exists to do one job in the loop — measure, generate, score, track, or guide progression.</p>
+    </div>
+    <div class="comp-grid">
+      <div class="comp-item">
+        <div class="comp-letter">A</div>
+        <h3>Skill Assessment</h3>
+        <p>Determines your baseline ability and alignment to your target role.</p>
+      </div>
+      <div class="comp-item">
+        <div class="comp-letter">B</div>
+        <h3>Task Engine</h3>
+        <p>Generates real engineering work in place of lessons and tutorials.</p>
+      </div>
+      <div class="comp-item">
+        <div class="comp-letter">C</div>
+        <h3>Evaluation System</h3>
+        <p>Scores performance and produces structured, actionable feedback.</p>
+      </div>
+      <div class="comp-item">
+        <div class="comp-letter">D</div>
+        <h3>Skill Profile</h3>
+        <p>A continuously updated, verifiable representation of your ability.</p>
+      </div>
+      <div class="comp-item">
+        <div class="comp-letter">E</div>
+        <h3>Progression System</h3>
+        <p>Defines the stages from beginner to job-ready engineer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="output">
+  <div class="container">
+    <div class="output-grid">
+      <div>
+        <div class="section-tag">What you walk away with</div>
+        <h2 style="font-size:2.6rem; line-height:1.15; margin-bottom:24px;">No certificates.<br>Verified ability.</h2>
+        <ul class="output-list">
+          <li><span class="tick">→</span><span>A verified skill score across every core engineering dimension</span></li>
+          <li><span class="tick">→</span><span>A portfolio of completed, evaluated engineering projects</span></li>
+          <li><span class="tick">→</span><span>A measurable performance history over time</span></li>
+          <li><span class="tick">→</span><span>A clear, evidence-based job readiness assessment</span></li>
+        </ul>
+      </div>
+      <div class="output-visual">
+        <div class="terminal-head">
+          <div class="dot" style="background:var(--rust)"></div>
+          <div class="dot" style="background:#D6A23B"></div>
+          <div class="dot" style="background:#7A8F4A"></div>
+        </div>
+        <div class="line"><span class="key">user_id:</span> <span class="val">a-kassa-2031</span></div>
+        <div class="line"><span class="key">target_role:</span> <span class="val">ML Systems Engineer</span></div>
+        <div class="line"><span class="key">tasks_completed:</span> <span class="val">38</span></div>
+        <div class="line"><span class="key">avg_eval_score:</span> <span class="val">76.4</span></div>
+        <div class="line"><span class="key">readiness:</span> <span class="val ok">72% — APPROACHING THRESHOLD</span></div>
+        <div class="line"><span class="key">next_task:</span> <span class="val">inference_latency_opt_v3</span></div>
+        <div class="line" style="margin-top:20px; color:var(--ash);">// status updates after every submission</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="model" id="model">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-tag">Business model</div>
+      <h2>Built to scale from learners to hiring infrastructure.</h2>
+      <p>Three phases, one growing dataset: verified skill data that becomes more valuable to employers over time.</p>
+    </div>
+    <div class="model-grid">
+      <div class="model-card active">
+        <span class="phase-tag">Phase 1 — Live</span>
+        <h3>Learner subscriptions</h3>
+        <p>Subscription access to the task engine, evaluation system, and skill profile — the core loop that builds ability.</p>
+      </div>
+      <div class="model-card">
+        <span class="phase-tag">Phase 2 — Talent access</span>
+        <h3>Verified candidate access</h3>
+        <p>Companies pay to access a pool of candidates with verified, evaluated skill profiles — not resumes.</p>
+      </div>
+      <div class="model-card">
+        <span class="phase-tag">Phase 3 — Pipeline</span>
+        <h3>Hiring infrastructure</h3>
+        <p>Skill-based filtering, candidate matching, and placement — a full talent pipeline built on verified data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="vision" id="cta">
+  <div class="container">
+    <div class="vision-inner">
+      <div class="section-tag">The long-term vision</div>
+      <h2>Infrastructure for talent creation — at global scale.</h2>
+      <p>Forge AI is building toward a system that produces verified AI engineers continuously, and connects them directly to the employers who need them.</p>
+      <a href="waitlist.html" class="btn-primary">Join the Waitlist</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="logo"><span class="mark"></span>FORGE AI</div>
+      <div class="footer-links">
+        <a href="#problem">Problem</a>
+        <a href="#flow">How it works</a>
+        <a href="#components">System</a>
+        <a href="#model">Business</a>
+      </div>
+    </div>
+    <div class="footer-copy">© 2026 FORGE AI — A SKILL PRODUCTION PIPELINE, NOT A COURSE PLATFORM.</div>
+  </div>
+</footer>
+
+<script>
+  const card = document.getElementById('profileCard');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        card.classList.add('in-view');
+      }
+    });
+  }, {threshold:0.4});
+  observer.observe(card);
+</script>
+
+</body>
+</html>
